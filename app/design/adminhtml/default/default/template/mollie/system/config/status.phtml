@@ -52,12 +52,14 @@ $countries = Mage::getModel('adminhtml/system_config_source_country')->toOptionA
 					<th style="width:150px;"><?php echo $core->__('Minimum Amount');?></th>
 					<th style="width:150px;"><?php echo $core->__('Maximum Amount');?></th>
 					<th><?php if($storeId == 0) : echo $core->__('Allowed countries'); endif;?></th>
+					<th style="width:40px;"><?php echo $core->__('Sort Order');?></th>
 				</tr>
 				<?php
 				foreach($methods as $key => $method):
 					$title = Mage::helper('mpm/data')->getConfig('mpm_void_' . str_pad($key, 2, "0", STR_PAD_LEFT), 'title', $storeId);
 					$allowSpecific = Mage::helper('mpm/data')->getConfig('mpm_void_' . str_pad($key, 2, "0", STR_PAD_LEFT), 'allowspecific', $storeId);
 					$specificCountry = explode(',', Mage::helper('mpm/data')->getConfig('mpm_void_' . str_pad($key, 2, "0", STR_PAD_LEFT), 'specificcountry'), $storeId);
+					$sortOrder = Mage::helper('mpm/data')->getConfig('mpm_void_' . str_pad($key, 2, "0", STR_PAD_LEFT), 'sort_order', $storeId);
 
 					if ($method['available']):
 						?>
@@ -80,6 +82,7 @@ $countries = Mage::getModel('adminhtml/system_config_source_country')->toOptionA
 							<td><?php echo $core->__($method['description']); ?></td>
 							<td>&euro; <?php echo number_format($method['amount']->minimum, 2); ?></td>
 							<td>&euro; <?php echo number_format($method['amount']->maximum, 2); ?></td>
+
 							<td class="value">
 								<?php if ($storeId == 0): ?>
 									<select id="payment_mpm_void_<?php echo str_pad($key, 2, "0", STR_PAD_LEFT); ?>_allowspecific"
@@ -111,6 +114,12 @@ $countries = Mage::getModel('adminhtml/system_config_source_country')->toOptionA
 								<?php endforeach; ?>
 									</select>
 								<?php endif; ?>
+							</td>
+							<td>
+								<input id="payment_mpm_void_<?php echo str_pad($key, 2, "0", STR_PAD_LEFT); ?>_sort_order"
+									   name="groups[mpm_void_<?php echo str_pad($key, 2, "0", STR_PAD_LEFT); ?>][fields][sort_order][value]"
+									   value="<?php echo $sortOrder; ?>"
+									   style="width:40px;" />
 							</td>
 						</tr>
 					<?php
